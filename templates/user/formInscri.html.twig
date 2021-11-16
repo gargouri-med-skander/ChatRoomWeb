@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title>Sign Up</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+</head>
+<body class="index is-preload">
+<div id="page-wrapper">
+
+    <!-- Header -->
+    <header id="header" class="alt">
+        <h1 id="logo"><a href="index.html">Chat with <span>everyone</span></a></h1>
+        <nav id="nav">
+            <ul>
+                <li class="current"><a href={{ path('signin') }}>Sign In</a></li>
+                <li><a href="#" class="button primary">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+</div>
+
+<!-- Banner -->
+<section id="banner">
+
+
+    <div class="inner">
+
+        <header>
+            <h2>Sign up</h2>
+        </header>
+        {{ form_start(form) }}
+        {{ form_errors(form.nom) }}
+        <div  class="form-group">
+            {{ form_widget(form.nom,{'attr': {'placeholder': 'first name'}}) }}
+        </div>
+        {{ form_errors(form.prenom) }}
+        <br>
+            <div  class="form-group">
+                {{ form_widget(form.prenom,{'attr': {'placeholder': 'last name'}}) }}
+            </div>
+        {{ form_errors(form.gmail) }}
+        <br>
+                <div  class="form-group">
+                    {{ form_widget(form.gmail,{'attr': {'placeholder': 'email'}}) }}
+                </div>
+        {{ form_errors(form.password) }}
+        <br>
+                    <div  class="form-group">
+
+                        {{ form_widget(form.password,{'attr': {'placeholder': 'password'}}) }}
+                    </div>
+        <br>
+                        <div  class="form-group">
+                             {{ form_label(form.dateNaissance,"birthday") }}
+                            {{ form_widget(form.dateNaissance) }}
+                        </div>
+        <br>
+
+                            <div  class="form-group">
+                             {{ form_label(form.gender,"gender") }}
+                            </div>
+                             {{ form_widget(form.gender) }}
+        <br>
+                                <div  class="form-group">
+                               {{ form_label(form.role,"role") }}
+                                </div>
+                              {{ form_widget(form.role) }}
+        <br>
+
+                              {{ form_widget(form.signup) }}
+
+                                {{ form_end(form) }}
+    </div>
+</section>
+<!-- CTA -->
+<section id="cta">
+
+    <header>
+        <h2>Ready to meet new  <strong>friends</strong>?</h2>
+        <p></p>
+    </header>
+    <footer>
+        <ul class="buttons">
+            <li><a href="#" class="button primary">Sign Up</a></li>
+            <li><a href={{ path('signin') }} class="button">Sign In</a></li>
+        </ul>
+    </footer>
+
+</section>
+
+<!-- Footer -->
+<footer id="footer">
+
+    <ul class="icons">
+        <li><a href="#" class="icon brands circle fa-twitter"><span class="label">Twitter</span></a></li>
+        <li><a href="#" class="icon brands circle fa-facebook-f"><span class="label">Facebook</span></a></li>
+        <li><a href="#" class="icon brands circle fa-google-plus-g"><span class="label">Google+</span></a></li>
+        <li><a href="#" class="icon brands circle fa-github"><span class="label">Github</span></a></li>
+    </ul>
+
+    <ul class="copyright">
+        <li>&copy; Untitled</li>
+    </ul>
+
+</footer>
+
+</div>
+
+<!-- Scripts -->
+
+<script>
+
+    $('#datepicker').datepicker({
+        uiLibrary: 'bootstrap'
+    });
+</script>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.dropotron.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>
