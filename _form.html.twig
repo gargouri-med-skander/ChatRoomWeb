@@ -1,0 +1,45 @@
+{{ form_start(form,{'attr': {'novalidate': 'novalidate'}}) }}
+
+<div class="col-md-9 col-md-9 col-sm-9 col-xs-12">
+    <div class="hpanel email-compose">
+        <div class="panel-heading hbuilt">
+            <div class="p-xs h4">
+                New message
+            </div>
+        </div>
+
+        <div class="panel-heading hbuilt">
+            <div class="p-xs">
+
+                    <div class="form-group">
+                        <label class="col-lg-1 control-label text-left">To:</label>
+                            {{ form_widget(form.iduserrecever,{
+                                'attr' : {
+                                    'class' : 'form-control '
+                                }
+                            })
+                            }}
+                    </div>
+
+            </div>
+        </div>
+        <div class="panel-body no-padding">
+            <div class="summernote6">
+                {{ form_widget(form.contenumessage,{
+                    'attr' : {
+                        'class' : 'form-control '
+                    }
+                })
+                }}
+            </div>
+            <div style="color: red; size: 15px; font-family: bold;">
+                {{ form_errors(form.contenumessage) }}
+            </div>
+        </div>
+
+        <div class="panel-footer">
+            <button class="btn">{{ button_label|default('Send mail') }}</button>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}

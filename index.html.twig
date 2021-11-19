@@ -1,0 +1,156 @@
+{% extends 'baseTemplate.html.twig' %}
+
+{% block title %}Message index{% endblock %}
+
+{% block content %}
+    <style>
+        #cont{
+            padding-top: 60px;
+        }
+    </style>
+<div class="mailbox-area mg-b-15" id="cont">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-md-3 col-sm-3 col-xs-12">
+                <div class="hpanel responsive-mg-b-30">
+                    <div class="panel-body">
+
+                        <ul class="mailbox-list">
+                            <li class="active">
+                                <a href="#">
+                                    <span class="pull-right">{{ messages | length }}</span>
+                                    <i class="fa fa-envelope"></i> Inbox
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{  path('message_new') }}"><i class="fa fa-paper-plane"></i> Sent</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-pencil"></i> Draft</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-trash"></i> Trash</a>
+                            </li>
+                        </ul>
+                        <hr>
+                        <ul class="mailbox-list">
+                            <li>
+                                <a href="#"><i class="fa fa-plane text-danger"></i> Travel</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-bar-chart text-warning"></i> Finance</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-users text-info"></i> Social</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-tag text-success"></i> Promos</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-flag text-primary"></i> Updates</a>
+                            </li>
+                        </ul>
+                        <hr>
+                        <ul class="mailbox-list">
+                            <li>
+                                <a href="#"><i class="fa fa-gears"></i> Settings</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-info-circle"></i> Support</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 col-md-9 col-sm-9 col-xs-12">
+                <div class="hpanel">
+                    <div class="panel-heading hbuilt mailbox-hd">
+                        <div class="text-center p-xs font-normal">
+                            <div class="input-group">
+                                <input type="text" class="form-control input-sm" placeholder="Search email in your inbox..."> <span class="input-group-btn active-hook"> <button type="button" class="btn btn-sm btn-default">Search
+											</button> </span></div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6 col-md-6 col-sm-6 col-xs-8">
+                                <div class="btn-group ib-btn-gp active-hook mail-btn-sd mg-b-15">
+                                    <button class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Refresh</button>
+                                    <button class="btn btn-default btn-sm"><i class="fa fa-check"></i></button>
+                                    <button class="btn btn-default btn-sm"><i class="fa fa-tag"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-md-6 col-sm-6 col-xs-4 mailbox-pagination">
+                                <div class="btn-group ib-btn-gp active-hook mail-btn-sd mg-b-15">
+                                    <button class="btn btn-default btn-sm"><i class="fa fa-arrow-left"></i></button>
+                                    <button class="btn btn-default btn-sm"><i class="fa fa-arrow-right"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive ib-tb">
+                            <table class="table table-hover table-mailbox">
+
+                                <tbody>
+                                {% for user in users %}
+                                <tr class="unread">
+                                    <td>
+                                            <div class="custom-control custom-checkbox">
+
+
+                                                <button class="btn btn-default btn-sm"><i class="fa fa-eye"></i></button>
+                                                <a href="{{  path('message_edit', {idMessage: user.idMessage}) }}">
+                                                <button class="btn btn-default btn-sm"><i class="fa fa-exclamation"></i></button>
+                                                </a>
+                                                <a href="{{  path('message_delete', {idMessage: user.idMessage}) }}">
+                                                <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+                                                </a>
+                                                <label class="custom-control-label" for="customCheck1"></label>
+                                                <a href="{{ path('reagirnew',{id: user.idMessage}) }}"   class="fa fa-heart js-like-event"></a>
+                                                <span class="js-like-event-count"></span>
+                                            </div>
+                                    </td>
+
+
+                                    <td><a href="#"></a>{{ user.nom }}</td>
+
+                                    <td><a href="#">{{ user.contenumessage }}</a>
+                                    </td>
+                                    <td><i class="fa fa-paperclip"></i></td>
+                                    <td class="text-right mail-date">{{ user.dateEnvoi}}</td>
+                                </tr>
+
+                                {% else %}
+                                    <tr>
+                                        <td colspan="6">no records found</td>
+                                    </tr>
+
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function() {
+            $('.js-like-event').on('click', function(e) {
+                e.preventDefault();
+                var $link = $(e.currentTarget);
+                $link.toggleClass('fa fa-heart').toggleClass('fa fa-heart ');
+                $.ajax({
+                    method: 'POST',
+                    url: $link.attr('href')
+                }).done(function(data) {
+                    $('.js-like-event-count').html(data.hearts);
+                    console.log(data.hearts);
+                })
+            });
+        });
+    </script>
+{% endblock %}

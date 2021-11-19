@@ -1,0 +1,40 @@
+{% extends 'baseTemplate.html.twig' %}
+
+{% block title %}New Message{% endblock %}
+
+{% block content %}
+    <h1>Create new Message</h1>
+
+    {{ include('message/_form.html.twig') }}
+
+    <a href="{{ path('message_index') }}">back to list</a>
+{% endblock %}
+{% block stylesheet %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('backAssets/css/summernote/summernote.css')}}">
+{% endblock %}
+{% block js %}
+    {{ parent() }}
+    <script src="{{ asset('backAssets/js/calendar/moment.min.js') }}"></script>
+    <script src="{{ asset('backAssets/js/calendar/fullcalendar.min.js') }}"></script>
+    <script src="{{ asset('backAssets/js/calendar/fullcalendar-active.js') }}"></script>
+    <!-- summernote JS
+		============================================ -->
+    <script src="{{ asset('backAssets/js/summernote/summernote.min.js') }}"></script>
+    <script src="{{ asset('backAssets/js/summernote/summernote-active.js') }}"></script>
+    <!-- form validate JS
+		============================================ -->
+    <script src="{{ asset('backAssets/js/form-validation/jquery.form.min.js') }}"></script>
+    <script src="{{ asset('backAssets/js/form-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('backAssets/js/form-validation/form-active.js') }}"></script>
+    <!-- multiple email JS
+		============================================ -->
+    <script src="{{ asset('backAssets/js/multiple-email/multiple-email-active.js') }}"></script>
+    <!-- dropzone JS
+		============================================ -->
+    <script src="{{ asset('backAssets/js/dropzone/dropzone.js') }}"></script>
+    <!-- tab JS
+		============================================ -->
+    <script src="{{ asset('backAssets/js/tab.js') }}"></script>
+
+{% endblock %}
