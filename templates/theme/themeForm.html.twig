@@ -1,0 +1,47 @@
+{% extends   'base.html.twig' %}
+{% block title %}Add a theme{% endblock%}
+{% block body %}
+    <div id="main">
+
+
+        {{ form_start(themeForm) }}
+        {{ form_widget(themeForm.nomTheme,{'attr': {'placeholder': 'Title of the theme'}}) }}
+
+        {{ form_errors(themeForm.nomTheme) }}
+
+        <br>
+
+            {{ form_widget(themeForm.visibilite) }}
+
+        {{ form_errors(themeForm.visibilite) }}
+
+        <br>
+
+
+            {{ form_widget(themeForm.capacite,{'attr': {'placeholder': 'capacity of the theme'}}) }}
+            {{ form_errors(themeForm.capacite) }}
+
+
+
+        <br>
+
+
+            {{ form_widget(themeForm.image,{'attr': {'placeholder': 'a picture of the theme'}}) }}
+
+        {{ form_errors(themeForm.image) }}
+
+<br>
+        <ul class="actions">
+
+            <li> {{ form_widget(themeForm.Add) }} </li>
+        </ul>
+
+        {{ form_end(themeForm) }}
+
+
+
+    </div>
+
+
+
+{% endblock %}

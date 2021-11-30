@@ -1,0 +1,41 @@
+<?php
+
+declare(strict_types=1);
+
+namespace DoctrineMigrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version20211129054740 extends AbstractMigration
+{
+    public function getDescription(): string
+    {
+        return '';
+    }
+
+    public function up(Schema $schema): void
+    {
+        // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE action CHANGE id_action id_action VARCHAR(100) NOT NULL');
+        $this->addSql('ALTER TABLE publication CHANGE id_publication id_publication VARCHAR(100) NOT NULL');
+        $this->addSql('DROP INDEX gmail ON theme_membre');
+        $this->addSql('DROP INDEX gmail_2 ON theme_membre');
+        $this->addSql('DROP INDEX id_theme ON theme_membre');
+        $this->addSql('CREATE INDEX id_theme ON theme_membre (id_theme, gmail)');
+    }
+
+    public function down(Schema $schema): void
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE action CHANGE id_action id_action VARCHAR(100) CHARACTER SET latin1 NOT NULL COLLATE `latin1_swedish_ci`');
+        $this->addSql('ALTER TABLE publication CHANGE id_publication id_publication VARCHAR(100) CHARACTER SET latin1 NOT NULL COLLATE `latin1_swedish_ci`');
+        $this->addSql('DROP INDEX id_theme ON theme_membre');
+        $this->addSql('CREATE INDEX gmail ON theme_membre (gmail)');
+        $this->addSql('CREATE INDEX gmail_2 ON theme_membre (gmail)');
+        $this->addSql('CREATE INDEX id_theme ON theme_membre (id_theme)');
+    }
+}

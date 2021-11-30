@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title>Log in or Sign up</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+<body class="index is-preload">
+<div id="page-wrapper">
+
+
+    <header id="header" class="alt">
+        <h1 id="logo"><a href="#">Chat with <span>everyone</span></a></h1>
+        <nav id="nav">
+            <ul>
+                <li class="current"><a href="#">Sign In</a></li>
+                <li><a href={{ path('signup') }} class="button">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Banner -->
+    <section id="banner">
+
+
+        <div class="inner">
+
+            <header>
+                <h2>Sign in</h2>
+            </header>
+            <form class="form-horizontal" method="post">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                {% if app.user %}
+                    <div class="mb-3">
+                        You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+                    </div>
+                {% endif %}
+
+
+                <label for="inputGmail">Gmail</label>
+                <input type="text" value="{{ last_username }}" name="gmail" id="inputGmail" class="form-control" autocomplete="username" required autofocus>
+                <label for="inputPassword">Password</label>
+                <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+                <input type="hidden" name="_csrf_token"
+                       value="{{ csrf_token('authenticate') }}">
+
+                {#
+                Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                See https://symfony.com/doc/current/security/remember_me.html
+
+                <div class="checkbox mb-3">
+                    <label>
+                        <input type="checkbox" name="_remember_me"> Remember me
+                    </label>
+                </div>
+                #}
+                <div>
+                    <a href={{ path('forgetPasse') }}>Forgot password ?</a>
+                </div>
+                <button class="btn btn-lg btn-primary" type="submit">
+                    Sign in
+                </button>
+            </form>
+
+
+        </div>
+
+
+    </section>
+
+
+    <!-- CTA -->
+    <section id="cta">
+
+        <header>
+            <h2>Ready to meet new <strong>FRIENDS</strong>?</h2>
+            <p></p>
+        </header>
+        <footer>
+            <ul class="buttons">
+                <li><a href={{ path('signup') }} class="button">Sign Up </a></li>
+                <li><a href="#" class="button">Sign In</a></li>
+            </ul>
+        </footer>
+
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer">
+
+        <ul class="icons">
+            <li><a href="#" class="icon brands circle fa-twitter"><span class="label">Twitter</span></a></li>
+            <li><a href="#" class="icon brands circle fa-facebook-f"><span class="label">Facebook</span></a></li>
+            <li><a href="#" class="icon brands circle fa-google-plus-g"><span class="label">Google+</span></a></li>
+            <li><a href="#" class="icon brands circle fa-github"><span class="label">Github</span></a></li>
+        </ul>
+
+        <ul class="copyright">
+            <li>&copy; Untitled</li>
+        </ul>
+
+    </footer>
+
+</div>
+
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.dropotron.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
