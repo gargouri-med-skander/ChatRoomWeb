@@ -3,7 +3,6 @@
 {% block body %}
 
 
-      <!--  <p>you can add your own theme and let random members argue about your chosen theme or you can create a private theme for specific members !</p>-->
     <header><ul class="actions">
             <li><a  class="button large" href={{ path('addtheme') }}> Add a Theme ?</a></li>
         </ul>
@@ -36,7 +35,7 @@
                                <h6>n°members:{{ y.nbrParticipant }}/{{ y.capacite }}</h6>
                                <h6>created by <strong>you</strong></h6>
                                <br>
-                               <a href="#">-Enter your Theme-</a>
+                               <a href="{{path('enterYourTheme',{'idTheme':y.idTheme}) }}">-Enter your Theme-</a>
                                <br>
                                <a href="{{ path('DeleteTheme',{'idTheme':y.idTheme})}}">-Delete your Theme-</a>
 
@@ -61,12 +60,13 @@
                                 <h3>{{ j.nomTheme }}</h3>
                                 <h6>n°members:{{ j.nbrParticipant }}/{{ j.capacite }}</h6>
 
-                                <h6>created by <strong>{{ j.email }}</strong> </h6>
+                                <h7>created by </h7>
+                                <h6><strong>{{ j.email }}</strong></h6>
 
                                 <br>
-                                <a  href="#">-ENTER-</a>
+                                <a  href={{path('enterJoinedTheme',{'idTheme':j.idTheme}) }}>-ENTER-</a>
                                 <br>
-                                    <a href="#">-LEAVE THE THEME-</a>
+                                    <a href="{{ path('leaveTheme',{'idTheme':j.idTheme})}}">-LEAVE THE THEME-</a>
                                 <br>
                                 <a href="#">-REPORT !-</a>
 
@@ -87,9 +87,10 @@
                                 <h3>{{ o.nomTheme }}</h3>
                                 <h6>n°members:{{ o.nbrParticipant }}/{{ o.capacite }}</h6>
 
-                                <h6>created by <strong>{{ o.email }}</strong></h6>
+                                <h7>created by </h7>
+                                <h6><strong>{{ o.email }}</strong></h6>
                              <br>
-                                <a href="{{ path('joinTheme',{'idTheme':o.idTheme})}}">-Join-</a>
+                                <a href="{{ path('joinThemes',{'idTheme':o.idTheme})}}">-Join-</a>
                                 <br>
                                 <a href="#">-REPORT !-</a>
 

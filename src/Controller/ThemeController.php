@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Theme;
 use App\Entity\ThemeMembre;
+use App\Entity\User;
 use App\Form\ThemeType;
 use App\Repository\ThemeMemberRepository;
 use App\Repository\ThemeRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,7 +16,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\User;
+
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -129,18 +131,15 @@ return new Response($retour);
 
 
     /**
-     * @Route ("/JoinThemes/{idTheme}",name="joinTheme",methods={"POST","GET"})
+     * @Route ("/JoinTheme/{idTheme}",name="joinThemes",methods={"POST","GET"})
      */
 public function joinTheme(EntityManagerInterface $em,$idTheme): Response
 {
     $user= $this->getUser();
     $mail=$user->getUsername();
     $theme=$em->getRepository(Theme::class)->find($idTheme);
-
     $list=$theme->getListDeParticipant();
-
-
-     array_push( $list,$mail);
+    array_push( $list,$mail);
     $theme->setNbrParticipant(count($list));
     $theme->setListDeParticipant($list);
      $em->persist($theme);
@@ -163,8 +162,111 @@ public function joinTheme(EntityManagerInterface $em,$idTheme): Response
         $em->remove($themeMember);
         $em->flush();
         return $this->redirectToRoute("theme");
+    }
+    /**
+     * @Route ("/LeaveTheme/{idTheme}",name="leaveTheme",methods={"POST","GET"})
+     */
+public function LeaveTheme($idTheme,EntityManagerInterface $em): \Symfony\Component\HttpFoundation\RedirectResponse
+{
+    $user= $this->getUser();
+    $mail=$user->getUsername();
+   $theme= $em->getRepository(Theme::class)->find($idTheme);
+    $list=$theme->getListDeParticipant();
+    $newlist=array_diff($list,array($mail));
+    $theme->setNbrParticipant(count($newlist));
+    $theme->setListDeParticipant($newlist);
+    $em->persist($theme);
+    $em->flush();
+    return $this->redirectToRoute("theme");
+}
+
+    /**
+     * @Route ("/loggedIn/Themes/yourTheme/{idTheme}",name="enterYourTheme",methods={"POST","GET"})
+     * @throws NonUniqueResultException
+     */
+    public function AffichTheme(Request $request,$idTheme,EntityManagerInterface $em,UserRepository $u): Response
+    {  $listUsers=[];
+        $user= $this->getUser();
+        $mail=$user->getUsername();
+        $theme= $em->getRepository(Theme::class)->find($idTheme);
+        $molaTheme=$u->findBygmail($mail);
+
+            $listParticipe=$theme->getListDeParticipant();
+            foreach ($listParticipe as $lp){
+                array_push($listUsers,$u->findBygmail($lp));
+
+            }
 
 
+            $listMessage=$theme->getMessages();
+
+
+
+            return $this->render('theme/YourThemechat.html.twig',[
+
+                'theme'=>$theme,'molaTheme'=>$molaTheme,'listUser'=>$listUsers
+            ]);
+        }
+
+    /**
+     * @Route ("/loggedIn/Themes/joinTheme/{idTheme}",name="enterJoinedTheme",methods={"POST","GET"})
+     */
+        public function AffichJoinedTheme($idTheme,EntityManagerInterface $em,UserRepository $u): Response
+        {
+            $theme= $em->getRepository(Theme::class)->find($idTheme);
+            $user=$u->findBygmail($theme->getEmail());
+           $listUsers=[];
+            $listParticipe=$theme->getListDeParticipant();
+            foreach ($listParticipe as $lp){
+                array_push($listUsers,$u->findBygmail($lp));
+
+            }
+            $listMessage=$theme->getMessages();
+
+
+            return $this->render('theme/joinedThemeChat.html.twig',[
+               'theme'=>$theme,'user'=>$user,'listUser'=>$listUsers
+
+            ]);
+        }
+
+    /**
+     * @Route ("/delete",name="kick",methods={"POST","GET"})
+     */
+    public function kickMember(UserRepository $u,ThemeRepository $t,EntityManagerInterface $em)
+    {
+        $idtheme=$_POST['idtheme'];
+        $idUser=$_POST['idUser'];
+        $user=$u->find($idUser);
+        $emailUser=$user->getGmail();
+        $theme=$t->find($idtheme);
+        $list=$theme->getListDeParticipant();
+        $newlist=array_diff($list,array($emailUser));
+        $theme->setListDeParticipant($newlist) ;
+        $theme->setNbrParticipant(count($newlist));
+        $em->persist($theme);
+        $em->flush();
+        $azerty="ok";
+           return new Response($azerty);
+    }
+
+    /**
+     * @Route ("/changeVisibilite",name="visibilite",methods={"POST","GET"})
+     */
+    public function changeVisibilite(ThemeRepository $t,EntityManagerInterface $em){
+        $idtheme=$_POST['idTheme'];
+        $theme=$t->find($idtheme);
+        $etat=$theme->getVisibilite();
+        if($etat==true){
+            $theme->setVisibilite(false);
+        }
+        else{
+            $theme->setVisibilite(true);
+        }
+        $em->persist($theme);
+        $em->flush();
+        $retour="valider";
+        return new Response($retour);
 
     }
 

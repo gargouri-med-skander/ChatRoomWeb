@@ -20,12 +20,11 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+
     /**
-     * @return User[] Returns an array of User objects
      * @throws NonUniqueResultException
      */
-
-    public function findBygmail($value): array
+    public function findBygmail($value): User
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.gmail = :val')

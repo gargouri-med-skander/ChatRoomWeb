@@ -1,8 +1,184 @@
 {% extends   'base.html.twig' %}
 {% block title %}messenger theme{% endblock%}
 {% block body %}
-<div>
-    <h1>{{ molaThemeMte3k}}</h1>
-</div>
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+    </style>
+    <!-- Main -->
+    <div id="main">
+
+
+    <!-- Post -->
+
+    </div>
+        <section id="sidebar">
+
+            <!-- Intro -->
+            <section id="intro">
+
+                <header>
+                    <img src="{{ asset('uploads/images/' ~theme.image) }}" class="img.fluid" alt="" width="200px" height="200px"/>
+                    <h2>{{ theme.nomTheme }}</h2>
+
+
+                </header>
+            </section>
+
+
+            <!-- Posts List -->
+    <section>
+        <ul class="posts">
+            <li>
+                <article>
+                    <header>
+                        <h3><a href="#">{{ molaTheme.nom }} {{ molaTheme.prenom }} </a></h3>
+
+                        <time class="published" >{{ molaTheme.gmail  }}</time>
+                        <h7>ADMIN</h7>
+<br>
+
+                        <br>
+
+                        <label class="switch" >
+                            <input id="visbilite" type="checkbox" onclick="ChangeVisibilite('{{ theme.idTheme }}')" {% if theme.visibilite %}
+                                spellcheck="false"
+                            {% else %}
+                                spellcheck="true"
+                            {% endif %} >
+                            <span class="slider"></span>
+                        </label> <h8 class="published" id="affichage" >
+                            {% if theme.visibilite %}
+                           private
+                        {% else %}
+                        public
+                        {% endif %}</h8>
+
+
+
+                    </header>
+
+                </article>
+            </li>
+        </ul>
+    </section>
+            <h3 style="color: #2ebaae">List of members
+                <time class="published" style="color: black" id="nbr">{{ theme.nbrParticipant }}</time><strong style="color:black">/{{ theme.capacite }}</strong>
+
+            </h3>
+            {% for u in listUser %}
+            <section id="{{ u.idUser }}">
+                <ul class="posts">
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="#"></a>{{u.nom  }} {{ u.prenom }}</h3>
+                                <time class="published" >{{u.gmail  }}</time>
+                                <h4 style="color: darkred">
+                                   <a onclick="kick('{{ u.idUser }}','{{ theme.idTheme }}','{{ u.idUser }}')">  kick    </a></h4>
+                            </header>
+
+                        </article>
+                    </li>
+                </ul>
+            </section>
+            {% endfor %}
+        </section>
+
+<script>
+function kick(iduser,idTheme,idSection){
+    $.ajax(
+        {
+            url:"{{ path('kick') }}",
+            type:'post',
+            data:{'idUser':iduser,'idtheme':idTheme},
+            success:function (rep){
+                if(rep=="ok"){
+                    $("#"+idSection).remove();
+                    var nbr=$("#nbr").html();
+                    nbr--;
+                    $("#nbr").html(nbr);
+                }
+            }
+        });
+}
+</script>
+    <script>
+function ChangeVisibilite(idtheme){
+    $.ajax(
+        {
+            url:"{{ path('visibilite') }}",
+            type:"post",
+            data:{'idTheme':idtheme},
+            success:function (reponse){
+                if(reponse=="valider"){
+                    $('input#visbilite').spellcheck.change();
+                    var bol=$("#affichage").html();
+                    if(bol=="private"){
+                        bol="public";
+                        $("#affichage").html(bol);
+                    }
+                    else{
+                        bol="private";
+                        $("#affichage").html(bol);
+                    }
+                }
+            }
+
+
+
+        });
+}
+
+    </script>
 
 {% endblock %}

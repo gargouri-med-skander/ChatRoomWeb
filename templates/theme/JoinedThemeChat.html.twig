@@ -1,0 +1,92 @@
+{% extends   'base.html.twig' %}
+{% block title %}messenger theme{% endblock%}
+{% block body %}
+    <!-- Main -->
+    <div id="main">
+
+
+        <!-- Post -->
+
+
+    </div>
+    <section id="sidebar">
+
+        <!-- Intro -->
+        <section id="intro">
+
+            <header>
+                <img src="{{ asset('uploads/images/' ~theme.image) }}" class="img.fluid"  width="200px" height="200px"/>
+                <h2>{{ theme.nomTheme }}</h2>
+
+            </header>
+        </section>
+
+
+        <!-- Posts List -->
+        <section>
+            <ul class="posts">
+                <li>
+                    <article>
+                        <header>
+                            <h3><a href="#">{{ user.nom }} {{user.prenom }} </a></h3>
+
+                            <time class="published" >{{ user.gmail  }}</time>
+                            <h7>ADMIN</h7>
+
+                            <br>
+                            <br>
+                            <h8>this Theme is
+                                {% if theme.visibilite %}
+                                    public
+                                {% else %}
+                                    private
+                                {% endif %}</h8>
+                        </header>
+
+                    </article>
+                </li>
+            </ul>
+        </section>
+        <h3 style="color: #2ebaae">List of members
+            <time class="published" style="color: black" id="nbr">{{ theme.nbrParticipant }}</time><strong style="color:black">/{{ theme.capacite }}</strong>
+
+        </h3>
+        {% for u in listUser %}
+            {% if  u.gmail== app.user.username  %}
+            <section >
+                <ul class="posts">
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="#"></a>{{u.nom  }} {{ u.prenom }}</h3>
+                                <time class="published" >{{u.gmail  }}</time>
+                                <h7>YOU</h7>
+
+
+                            </header>
+
+                        </article>
+                    </li>
+                </ul>
+            </section>
+
+
+            {% else %}
+                <section >
+                    <ul class="posts">
+                        <li>
+                            <article>
+                                <header>
+                                    <h3><a href="#"></a>{{u.nom  }} {{ u.prenom }}</h3>
+                                    <time class="published" >{{u.gmail  }}</time>
+                                </header>
+
+                            </article>
+                        </li>
+                    </ul>
+                </section>
+                {% endif %}
+        {% endfor %}
+    </section>
+
+{% endblock %}

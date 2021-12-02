@@ -78,6 +78,12 @@ class Theme
      */
     private $image;
 
+    /**
+     * @var array|null
+     * @ORM\Column(name="messages",type="json", nullable=true)
+     */
+    private $messages;
+
     public function getIdTheme(): ?int
     {
         return $this->idTheme;
@@ -162,6 +168,18 @@ class Theme
     public function setListDeParticipant(?array $listDeParticipant): self
     {
         $this->listDeParticipant = $listDeParticipant;
+
+        return $this;
+    }
+
+    public function getMessages(): ?array
+    {
+        return $this->messages;
+    }
+
+    public function setMessages(?array $messages): self
+    {
+        $this->messages = $messages;
 
         return $this;
     }
