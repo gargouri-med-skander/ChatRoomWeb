@@ -1,0 +1,52 @@
+{% extends 'front.html.twig' %}
+
+{% block title %}New Profil{% endblock %}
+
+{% block body %}
+
+    <section class="wrapper style3 container special">
+
+        <header class="major">
+            <h2>
+                <strong>Membres</strong><br><br>
+            </h2>
+        </header>
+        {% for p in profil %}
+
+            {% if p.idUser.idUser == userconne.idUser %}
+            {% else %}
+
+
+
+        <div class="row">
+            <div class="col-12 col-6-narrower">
+
+                <section>
+                    <a href="#" class="image featured"><img src="{{ asset('Upload/')}}{{ p.photoProfilPath }}" width="100" alt="" /></a>
+                    <header>
+                        <h3>{{ p.idUser.nom }}</h3>
+                    </header>
+                    {% set nbr = 0 %}
+                    {% for d in demande %}
+                    {% if d.idMembre.idUser == p.idUser.idUser %}
+                    {% set nbr = nbr+1 %}
+                    {% endif %}
+                    {% endfor %}
+                    {% if nbr == 0 %}
+                    <a href="{{ path('demande_new',{'idusermembre':p.idUser.idUser,'iduserconecter':userconne.idUser}) }}" class="button">Envoyer Invitation</a><br><br>
+                     {% else %}
+                         <a href="#" class="button">Invitation Déja Envoyer</a><br><br>
+                       {% endif %}
+                         </section>
+
+            </div>
+
+        </div>
+        {% endif %}
+        {% endfor %}
+
+    </section>
+    {{ knp_pagination_render(profil) }}
+
+
+{% endblock %}

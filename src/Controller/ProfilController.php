@@ -40,6 +40,19 @@ class ProfilController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/back", name="backform", methods={"GET"})
+     */
+    public function back(): Response
+    {
+
+
+        return $this->render('profil/index.html.twig', [
+        ]);
+    }
+
+
     /**
      * @Route("/new/{iduser}", name="profil_new", methods={"GET","POST"})
      */
@@ -99,7 +112,6 @@ class ProfilController extends AbstractController
 
             return $this->redirectToRoute('profil_index');
         }
-
 
         return $this->render('profil/edit.html.twig', [
             'profil' => $profil,

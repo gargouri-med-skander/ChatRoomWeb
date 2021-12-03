@@ -1,0 +1,40 @@
+{% extends 'front.html.twig' %}
+
+{% block title %}New Profil{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form) }}
+    <fieldset>
+
+
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="textinput">Bio</label>
+            <div class="col-md-5">
+                {{ form_widget(form.bio, {  'attr': {'class': 'form-control input-md'} }) }}
+                {{ form_errors(form.bio) }}
+            </div>
+        </div>
+
+        <!-- Password input-->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="passwordinput">Image </label>
+            <div class="col-md-5">
+                {{ form_widget(form.file, { 'attr': {'class': 'form-control input-md'} }) }}
+
+            </div>
+        </div>
+        <!-- Button -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="singlebutton"></label>
+            <div class="col-md-4">
+                <input type="submit" value="Enregistrer" class="btn btn-success" formnovalidate/>
+            </div>
+        </div>
+
+    </fieldset>
+
+    {{ form_end(form) }}
+
+{% endblock %}

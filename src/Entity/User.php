@@ -2,14 +2,7 @@
 
 namespace App\Entity;
 
-use DateTime;
-
-use Symfony\Component\Validator\Constraints as Assert;
-use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints\Date;
-
-
 
 /**
  * User
@@ -32,7 +25,6 @@ class User
      * @var string
      *
      * @ORM\Column(name="Nom", type="string", length=100, nullable=false)
-     * @Assert\Length(min=10,max=20)
      */
     private $nom;
 
@@ -40,15 +32,13 @@ class User
      * @var string
      *
      * @ORM\Column(name="Prenom", type="string", length=100, nullable=false)
-     * @Assert\Length(min=10,max=20)
      */
     private $prenom;
 
     /**
-     * @var DateTime
+     * @var \DateTime
      *
      * @ORM\Column(name="date_naissance", type="date", nullable=false)
-     * @Assert\NotBlank
      */
     private $dateNaissance;
 
@@ -56,7 +46,6 @@ class User
      * @var string
      *
      * @ORM\Column(name="gmail", type="string", length=100, nullable=false)
-     * @Assert\NotBlank
      */
     private $gmail;
 
@@ -64,23 +53,20 @@ class User
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=100, nullable=false)
-     * @Assert\NotBlank
      */
     private $password;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="gender", type="string", length=100, nullable=false)
-     * @Assert\NotBlank
+     * @ORM\Column(name="gender", type="string", length=0, nullable=false)
      */
     private $gender;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Role", type="string", length=100, nullable=false)
-     * @Assert\NotBlank
+     * @ORM\Column(name="Role", type="string", length=0, nullable=false)
      */
     private $role;
 
@@ -113,16 +99,14 @@ class User
         return $this;
     }
 
-    public function getDateNaissance(): ?DateTime
+    public function getDateNaissance(): ?\DateTimeInterface
     {
         return $this->dateNaissance;
     }
 
-    public function setDateNaissance(DateTime $date): self
+    public function setDateNaissance(\DateTimeInterface $dateNaissance): self
     {
-
-
-        $this->dateNaissance = $date;
+        $this->dateNaissance = $dateNaissance;
 
         return $this;
     }
@@ -174,7 +158,6 @@ class User
 
         return $this;
     }
-
 
 
 }

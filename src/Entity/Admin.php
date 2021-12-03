@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Admin
  *
- * @ORM\Table(name="admin", indexes={@ORM\Index(name="gmail_2", columns={"gmail"}), @ORM\Index(name="gmail", columns={"gmail"}), @ORM\Index(name="gmail_3", columns={"gmail"})})
+ * @ORM\Table(name="admin", indexes={@ORM\Index(name="id_user", columns={"id_user"})})
  * @ORM\Entity
  */
 class Admin
@@ -15,36 +15,29 @@ class Admin
     /**
      * @var int
      *
-     * @ORM\Column(name="id_admin", type="integer", nullable=false)
+     * @ORM\Column(name="id_user", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idAdmin;
+    private $idUser;
 
     /**
-     * @var int
+     * @var int|null
      *
-     * @ORM\Column(name="num_poste", type="integer", nullable=false)
+     * @ORM\Column(name="num_poste", type="integer", nullable=true)
      */
     private $numPoste;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="adresse", type="string", length=250, nullable=false)
+     * @ORM\Column(name="adresse", type="string", length=250, nullable=true)
      */
     private $adresse;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="gmail", type="string", length=250, nullable=false)
-     */
-    private $gmail;
-
-    public function getIdAdmin(): ?int
+    public function getIdUser(): ?int
     {
-        return $this->idAdmin;
+        return $this->idUser;
     }
 
     public function getNumPoste(): ?int
@@ -52,7 +45,7 @@ class Admin
         return $this->numPoste;
     }
 
-    public function setNumPoste(int $numPoste): self
+    public function setNumPoste(?int $numPoste): self
     {
         $this->numPoste = $numPoste;
 
@@ -64,21 +57,9 @@ class Admin
         return $this->adresse;
     }
 
-    public function setAdresse(string $adresse): self
+    public function setAdresse(?string $adresse): self
     {
         $this->adresse = $adresse;
-
-        return $this;
-    }
-
-    public function getGmail(): ?string
-    {
-        return $this->gmail;
-    }
-
-    public function setGmail(string $gmail): self
-    {
-        $this->gmail = $gmail;
 
         return $this;
     }

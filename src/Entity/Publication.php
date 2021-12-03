@@ -13,18 +13,18 @@ use Doctrine\ORM\Mapping as ORM;
 class Publication
 {
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="id_publication", type="string", length=100, nullable=false)
+     * @ORM\Column(name="id_publication", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idPublication;
 
     /**
-     * @var string
+     * @var \DateTime
      *
-     * @ORM\Column(name="date_publication", type="string", length=100, nullable=false)
+     * @ORM\Column(name="date_publication", type="date", nullable=false)
      */
     private $datePublication;
 
@@ -35,17 +35,17 @@ class Publication
      */
     private $pubPath;
 
-    public function getIdPublication(): ?string
+    public function getIdPublication(): ?int
     {
         return $this->idPublication;
     }
 
-    public function getDatePublication(): ?string
+    public function getDatePublication(): ?\DateTimeInterface
     {
         return $this->datePublication;
     }
 
-    public function setDatePublication(string $datePublication): self
+    public function setDatePublication(\DateTimeInterface $datePublication): self
     {
         $this->datePublication = $datePublication;
 

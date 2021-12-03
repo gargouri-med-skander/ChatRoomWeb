@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ThemeMembre
  *
- * @ORM\Table(name="theme_membre", indexes={@ORM\Index(name="id_theme", columns={"id_theme", "id_user"})})
+ * @ORM\Table(name="theme_membre")
  * @ORM\Entity
  */
 class ThemeMembre
@@ -15,11 +15,11 @@ class ThemeMembre
     /**
      * @var int
      *
-     * @ORM\Column(name="id_theme_membre", type="integer", nullable=false)
+     * @ORM\Column(name="id_membre", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idThemeMembre;
+    private $idMembre;
 
     /**
      * @var int
@@ -28,23 +28,9 @@ class ThemeMembre
      */
     private $idTheme;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_user", type="integer", nullable=false)
-     */
-    private $idUser;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="gmail", type="string", length=250, nullable=false)
-     */
-    private $gmail;
-
-    public function getIdThemeMembre(): ?int
+    public function getIdMembre(): ?int
     {
-        return $this->idThemeMembre;
+        return $this->idMembre;
     }
 
     public function getIdTheme(): ?int
@@ -55,30 +41,6 @@ class ThemeMembre
     public function setIdTheme(int $idTheme): self
     {
         $this->idTheme = $idTheme;
-
-        return $this;
-    }
-
-    public function getIdUser(): ?int
-    {
-        return $this->idUser;
-    }
-
-    public function setIdUser(int $idUser): self
-    {
-        $this->idUser = $idUser;
-
-        return $this;
-    }
-
-    public function getGmail(): ?string
-    {
-        return $this->gmail;
-    }
-
-    public function setGmail(string $gmail): self
-    {
-        $this->gmail = $gmail;
 
         return $this;
     }

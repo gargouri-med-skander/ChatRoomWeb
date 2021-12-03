@@ -43,18 +43,11 @@ class Theme
     private $capacite;
 
     /**
-     * @var int|null
+     * @var int
      *
-     * @ORM\Column(name="nbr_participant", type="integer", nullable=true)
+     * @ORM\Column(name="nbr_participant", type="integer", nullable=false)
      */
     private $nbrParticipant;
-
-    /**
-     * @var array|null
-     *
-     * @ORM\Column(name="list_de_participant", type="json", nullable=true)
-     */
-    private $listDeParticipant;
 
     public function getIdTheme(): ?int
     {
@@ -102,21 +95,9 @@ class Theme
         return $this->nbrParticipant;
     }
 
-    public function setNbrParticipant(?int $nbrParticipant): self
+    public function setNbrParticipant(int $nbrParticipant): self
     {
         $this->nbrParticipant = $nbrParticipant;
-
-        return $this;
-    }
-
-    public function getListDeParticipant(): ?array
-    {
-        return $this->listDeParticipant;
-    }
-
-    public function setListDeParticipant(?array $listDeParticipant): self
-    {
-        $this->listDeParticipant = $listDeParticipant;
 
         return $this;
     }

@@ -1,0 +1,158 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title>Profile</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{{ asset('front/assets/css/main.css') }}" />
+</head>
+{% if user == null %}
+    <body class="is-preload">
+
+    <!-- Header -->
+
+    <header id="header">
+
+
+        <div class="inner">
+            <a href="#" class="image avatar"><img src="{{ asset('front/images/avatar.jpg') }}" alt="" /></a>
+            <h1><strong>{{ userconnecter.nom }}</strong></h1>
+        </div>
+        <div class="innerInfo">
+            <div class="col-4 col-12-small">
+                <ul class="labeled-icons">
+
+
+
+
+                    <h3 class="icon solid fa-envelope"><span class="label">Email</span>{{ userconnecter.gmail }}</h3>
+
+
+                </ul>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- Main -->
+    <div id="main">
+
+        <!-- One -->
+        <section id="one">
+            <header class="major">
+                <h2>Bio :</h2>
+                <p>User_Bio_here</p>
+            </header>
+            <ul class="actions">
+                <a href="{{ path('profil_new',{'iduser':userconnecter.iduser}) }}" class="button">Add Profil</a>
+                <a href="#" class="button">Add Friend</a>
+            </ul>
+        </section>
+
+        <!-- Two -->
+        <section id="two">
+
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="inner">
+            <ul class="copyright">
+                &copy; UntitledDesign: <a href="http://html5up.net">HTML5 UP</a>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{{ asset('front/assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('front/assets/js/jquery.poptrox.min.js') }}"></script>
+    <script src="{{ asset('front/assets/js/browser.min.js') }}"></script>
+    <script src="{{ asset('front/assets/js/breakpoints.min.js') }}"></script>
+    <script src="{{ asset('front/assets/js/util.js') }}"></script>
+    <script src="{{ asset('frot/assets/js/main.js') }}"></script>
+
+
+
+
+
+    </body>
+{% else %}
+
+    <body class="is-preload">
+
+    <!-- Header -->
+
+    <header id="header">
+
+
+        <div class="inner">
+            <a href="#" class="image avatar"><img src=src="{{ asset('/../../../../../../../wamp/www/Image')}}{{ user.photoProfilPath }}" alt="" /></a>
+            <h1><strong>{{ userconnecter.nom }}</strong></h1>
+        </div>
+        <div class="innerInfo">
+            <div class="col-4 col-12-small">
+                <ul class="labeled-icons">
+
+
+
+
+                    <h3 class="icon solid fa-envelope"><span class="label">Email</span>{{ userconnecter.gmail }}</h3>
+
+
+                </ul>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- Main -->
+    <div id="main">
+
+        <!-- One -->
+        <section id="one">
+            <header class="major">
+                <h2>Bio :</h2>
+                <p>{{ user.bio }}</p>
+
+            </header>
+            <ul class="actions">
+                <a href="{{ path('membrelist') }}" class="button">Add Friend</a>
+                <a href="{{ path('demande_index') }}" class="button">List Demande</a>
+                <a href="{{ path('profil_edit',{'idProfil':user.idProfil}) }}" class="button">Modifier Profil</a>
+            </ul>
+        </section>
+
+        <!-- Two -->
+        <section id="two">
+
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="inner">
+
+            <ul class="copyright">
+                &copy; UntitledDesign: <a href="http://html5up.net">HTML5 UP</a>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{{ asset('front/assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('front/assets/js/jquery.poptrox.min.js') }}"></script>
+    <script src="{{ asset('front/assets/js/browser.min.js') }}"></script>
+    <script src="{{ asset('front/assets/js/breakpoints.min.js') }}"></script>
+    <script src="{{ asset('front/assets/js/util.js') }}"></script>
+    <script src="{{ asset('frot/assets/js/main.js') }}"></script>
+
+
+
+
+
+    </body>
+
+{% endif %}
+</html>

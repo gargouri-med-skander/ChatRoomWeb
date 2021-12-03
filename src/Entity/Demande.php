@@ -5,21 +5,21 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Listami
+ * Demande
  *
- * @ORM\Table(name="listami", indexes={@ORM\Index(name="id_ami", columns={"id_ami"}), @ORM\Index(name="id_user", columns={"id_user"})})
+ * @ORM\Table(name="demande", indexes={@ORM\Index(name="id_membre", columns={"id_membre"}), @ORM\Index(name="id_user", columns={"id_user"})})
  * @ORM\Entity
  */
-class Listami
+class Demande
 {
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id_demande", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    private $idDemande;
 
     /**
      * @var \User
@@ -36,14 +36,14 @@ class Listami
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_ami", referencedColumnName="id_user")
+     *   @ORM\JoinColumn(name="id_membre", referencedColumnName="id_user")
      * })
      */
-    private $idAmi;
+    private $idMembre;
 
-    public function getId(): ?int
+    public function getIdDemande(): ?int
     {
-        return $this->id;
+        return $this->idDemande;
     }
 
     public function getIdUser(): ?User
@@ -58,14 +58,14 @@ class Listami
         return $this;
     }
 
-    public function getIdAmi(): ?User
+    public function getIdMembre(): ?User
     {
-        return $this->idAmi;
+        return $this->idMembre;
     }
 
-    public function setIdAmi(?User $idAmi): self
+    public function setIdMembre(?User $idMembre): self
     {
-        $this->idAmi = $idAmi;
+        $this->idMembre = $idMembre;
 
         return $this;
     }
