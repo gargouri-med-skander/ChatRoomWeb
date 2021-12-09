@@ -1,0 +1,102 @@
+{% extends   'Admin/dashboard.html.twig' %}
+{% block title %}Members List{% endblock%}
+{% block body %}
+    <div class="pagetitle">
+        <h1>Gestion Member</h1>
+
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <h3 style="color: #0c63e4">Members List</h3>
+<table>
+    <tr style="color: #0a53be">
+        <td >First name</td>
+        <td >Last name</td>
+        <td>Gmail</td>
+        <td>Gender</td>
+    </tr>
+    {% for m in memberList %}
+    <tr id="{{m.idUser  }}">
+        <td>{{  m.nom}}</td>
+        <td >{{ m.prenom }}</td>
+        <td>{{ m.gmail }}</td>
+        <td>{{ m.gender }}</td>
+        <td>
+                <a  onclick="sendAlert('{{ m.idUser }}')" >
+                    <span style="color: darkred">Send Alert!</span>
+                </a>
+            ||
+            <a  onclick="ban('{{ m.idUser }}','{{ m.idUser }}')" >
+               <span style="color: red" >BAN!</span>
+            </a>
+            </td>
+    </tr>
+    {% endfor %}
+</table>
+        </div>
+    </div>
+            <div class="col-lg-4">
+            <h3 style="color: #0c63e4">Ban List</h3>
+            <table style="margin-right: 500px">
+                <tr>
+                    <td >id</td>
+                     <td >gmail</td>
+                </tr>
+                {% for b in banList %}
+                    <tr  id="{{ b.id }}">
+                        <td>{{  b.id}}</td>
+                        <td>{{ b.gmail }}</td>
+                        <td>
+                            <a onclick="Remove('{{ b.id }}','{{ b.id }}')"  >
+                                <span style="color: darkgreen">Remove</span>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+        </div>
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+    </script>
+<script>
+    function ban(idUser,idTr){
+        $.ajax(
+            {
+                url:"{{ path('ban') }}",
+                type:'post',
+                data:{'idUser':idUser},
+                success:function (rep){
+                    if(rep=="Banok"){
+                        $("#"+idTr).remove();
+                    }
+                }
+            });
+    }
+</script>
+<script>
+    function Remove(idBanList,idTr){
+        $.ajax(
+            {
+                url:"{{ path('remove') }}",
+                type:'post',
+                data:{'idBan':idBanList},
+                success:function (rep){
+                    if(rep=="Removeok"){
+                        $("#"+idTr).remove();
+                    }
+                }
+            });
+    }
+</script>
+    <script>
+        function sendAlert(idUser){
+            $.ajax(
+                {
+                    url:"{{ path('Alert') }}",
+                    type:'post',
+                    data:{'iduser':idUser},
+                });
+        }
+    </script>
+{% endblock %}

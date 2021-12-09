@@ -1,94 +1,85 @@
 {% extends   'base.html.twig' %}
 {% block title %}messenger theme{% endblock%}
 {% block body %}
-    <style>
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
-
-        input:checked + .slider {
-            background-color: #2196F3;
-        }
-
-        input:focus + .slider {
-            box-shadow: 0 0 1px #2196F3;
-        }
-
-        input:checked + .slider:before {
-            -webkit-transform: translateX(26px);
-            -ms-transform: translateX(26px);
-            transform: translateX(26px);
-        }
-
-    </style>
     <!-- Main -->
-    <div id="main">
-
-
-    <!-- Post -->
-
+    <div id="main" style="position: fixed" >
+<!--chat-->
+<span class="mola" id="{{ molaTheme.nom }}"></span>
+        <div class="yoo" id="{{theme.idTheme }}">
+        </div>
+        <table style="margin-left: 30%">
+            <tr >
+                <td > <input name="usermsg" type="text" id="usermsg" /><a style="margin-left: 790px"  id="submitmsg" onclick="envoiyer('{{ theme.idTheme }}')" >SEND</a></td>
+            </tr>
+        </table>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            function envoiyer(idTheme){
+                var clientmsg = $("#usermsg").val();
+                $.ajax({
+                    url:'{{ path('sendMessage') }}',
+                    type:"post",
+                    data:{'msg':clientmsg,'idthemes':idTheme},
+                });
+                $("#usermsg").val("");
+                return false ;
+            }
+        </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            function loadLog() {
+            var idDiv=$(".yoo").attr("id");
+            var esmMolaTheme=$(".mola").attr("id");
+                var oldscrollHeight = $("#"+idDiv)[0].scrollHeight -20; //Scroll height before the request
+                $.ajax({
+                    url: "{{ path('message') }}",
+                    type: "post",
+                    data:{'idThemes':idDiv},
+                    success: function (retour) {
+                        $("#"+idDiv).empty();
+                        if (retour) {
+                            var ele = retour.split('/n');
+                            for(var i= 0; i < ele.length; i++)
+                            {  var test=ele[i].split(':');
+                                if(test[0]!=esmMolaTheme){
+                                $("#"+idDiv).append('<span>'+test[0]+'</span><div class="memeber"><p style="color: white">'+test[1]+'</p></div>');
+                                }
+                                else{
+                                    ele[i]=test[1];
+                                    $("#"+idDiv).append('<br><div class="moleh"  ><p style="color: white">'+ele[i]+'</p></div>');
+                                }
+                            }
+                            var newscrollHeight = $("#"+idDiv)[0].scrollHeight -20;
+                            if(oldscrollHeight<newscrollHeight) {
+                                $("#"+idDiv).animate({scrollTop: newscrollHeight}, 'normal');
+                            }
+                        }
+                    }
+                });
+            }
+            setInterval (loadLog, 2500);
+        });
+    </script>
     </div>
-        <section id="sidebar">
-
+    <section id="sidebar"  >
             <!-- Intro -->
             <section id="intro">
-
                 <header>
                     <img src="{{ asset('uploads/images/' ~theme.image) }}" class="img.fluid" alt="" width="200px" height="200px"/>
                     <h2>{{ theme.nomTheme }}</h2>
-
-
                 </header>
             </section>
-
-
-            <!-- Posts List -->
+        <!-- Posts List -->
     <section>
         <ul class="posts">
             <li>
                 <article>
                     <header>
                         <h3><a href="#">{{ molaTheme.nom }} {{ molaTheme.prenom }} </a></h3>
-
                         <time class="published" >{{ molaTheme.gmail  }}</time>
                         <h7>ADMIN</h7>
-<br>
-
                         <br>
-
+                        <br>
                         <label class="switch" >
                             <input id="visbilite" type="checkbox" onclick="ChangeVisibilite('{{ theme.idTheme }}')" {% if theme.visibilite %}
                                 spellcheck="false"
@@ -102,18 +93,13 @@
                         {% else %}
                         public
                         {% endif %}</h8>
-
-
-
                     </header>
-
                 </article>
             </li>
         </ul>
     </section>
             <h3 style="color: #2ebaae">List of members
                 <time class="published" style="color: black" id="nbr">{{ theme.nbrParticipant }}</time><strong style="color:black">/{{ theme.capacite }}</strong>
-
             </h3>
             {% for u in listUser %}
             <section id="{{ u.idUser }}">
@@ -126,7 +112,6 @@
                                 <h4 style="color: darkred">
                                    <a onclick="kick('{{ u.idUser }}','{{ theme.idTheme }}','{{ u.idUser }}')">  kick    </a></h4>
                             </header>
-
                         </article>
                     </li>
                 </ul>
@@ -173,12 +158,190 @@ function ChangeVisibilite(idtheme){
                     }
                 }
             }
-
-
-
         });
 }
-
     </script>
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+        input {
+            font-family: "Lato";
+        }
+        a {
+            color: #0000ff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .yoo {
+            text-align: left;
+            margin-left: 30%;
+            background: #fff;
+            height:490px;
+            width: 900px;
+            border: 1px solid #a7a7a7;
+            overflow: auto;
+            border-radius: 4px;
+            border-bottom: 4px solid #a7a7a7;
+        }
+        #usermsg {
+            width: 870px;
+            flex: 1;
+            border-radius: 4px;
+            border: 1px solid #ff9800;
+        }
+        #submitmsg
+        {
+            background: #ff9800;
+            border: 2px solid #e65100;
+            color: white;
+            padding: 6px 12px;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+        #menu p.welcome {
+            flex: 1;
+        }
+        a#exit {
+            color: white;
+            background: #c62828;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .msgln {
+            margin: 0 0 5px 0;
+        }
+        .msgln span.left-info {
+            color: orangered;
+        }
+        .msgln span.chat-time {
+            color: #666;
+            font-size: 60%;
+            vertical-align: super;
+        }
+        .msgln b.user-name, .msgln b.user-name-left {
+            font-weight: bold;
+            background: #546e7a;
+            color: white;
+            padding: 2px 4px;
+            font-size: 90%;
+            border-radius: 4px;
+            margin: 0 5px 0 0;
+        }
+        .msgln b.user-name-left {
+            background: orangered;
+        }
+        .memeber
+        {
+            background: #ff9800;
+            border: 1px solid #a7a7a7;
+            overflow: auto;
+            border-radius: 4px;
+            text-overflow: ellipsis;
+            margin-right: 25%;
+            border-bottom: 4px solid #a7a7a7;
+        }
+        .moleh
+        {
+            text-align: right;
+            background: #0c63e4;
+            border: 1px solid #a7a7a7;
+            overflow: auto;
+            border-radius: 4px;
+            text-overflow: ellipsis;
+            margin-left: 25%;
+            border-bottom: 4px solid #a7a7a7;
+        }
+        #sidebar {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            bottom: 0;
+            width: 300px;
+            z-index: 996;
+            transition: all 0.3s;
+            padding: 20px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #aab7cf transparent;
+            box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
+            background-color: #fff;
+        }
+        @media (max-width: 1199px) {
+            #sidebar {
+                left: -300px;
+            }
+        }
+        #sidebar::-webkit-scrollbar {
+            width: 5px;
+            height: 8px;
+            background-color: #fff;
+        }
+        #sidebar::-webkit-scrollbar-thumb {
+            background-color: #aab7cf;
+        }
 
+        @media (min-width: 1200px) {
+            #main, #footer {
+                margin-left: 300px;
+            }
+        }
+        @media (max-width: 1199px) {
+            .toggle-sidebar .sidebar {
+                left: 0;
+            }
+        }
+        @media (min-width: 1200px) {
+            .toggle-sidebar #main, .toggle-sidebar #footer {
+                margin-left: 0;
+            }
+            .toggle-sidebar .sidebar {
+                left: -300px;
+            }
+        }
+    </style>
 {% endblock %}

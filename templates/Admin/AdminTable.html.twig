@@ -1,0 +1,35 @@
+{% extends   'Admin/dashboard.html.twig' %}
+{% block title %}Admin List{% endblock%}
+{% block body %}
+    <div class="pagetitle">
+        <h1>gestion Admin</h1>
+
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <h3 style="color: #0c63e4">Admin List</h3>
+            <table>
+                <tr style="color: #0a53be">
+                    <td >First name</td>
+                    <td >Last name</td>
+                    <td>Gmail</td>
+                    <td>Gender</td>
+                </tr>
+    {% for a in AdminList %}
+<tr id="{{a.idUser  }}">
+    <td>{{  a.nom}}</td>
+    <td >{{ a.prenom }}</td>
+    <td>{{ a.gmail }}</td>
+    <td>{{ a.gender }}</td>
+</tr>
+    {% endfor %}
+            </table>
+        </div>
+    </div>
+
+
+
+
+
+
+{% endblock %}

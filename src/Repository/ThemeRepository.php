@@ -21,11 +21,23 @@ class ThemeRepository extends ServiceEntityRepository
     /**
       * @return Theme[] Returns an array of Theme objects
      */
-    public function findByNomTheme($nom):array
+    public function findByNomTheme($nom)
     {
         return $this->createQueryBuilder('t')
             ->where('t.nomTheme LIKE :x')
             ->setParameter('x', '%'.$nom.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Theme[] Returns an array of Theme objects
+     */
+    public function findByGmailTheme($gmail):array
+    {
+        return $this->createQueryBuilder('t')
+            ->where('t.email LIKE :x')
+            ->setParameter('x', '%'.$gmail.'%')
             ->getQuery()
             ->getResult();
     }

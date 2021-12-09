@@ -2,26 +2,74 @@
 {% block title %}messenger theme{% endblock%}
 {% block body %}
     <!-- Main -->
-    <div id="main">
-
-
-        <!-- Post -->
-
-
+    <div id="main" style="position: fixed">
+        <!--chat-->
+        <span class="userJoined" id="{{ userConnecte.nom }}"></span>
+        <div  class="yooo" id="{{ theme.idTheme }}">
+        </div>
+        <table style="margin-left: 30%">
+            <tr >
+                <td > <input name="usermsg" type="text" id="usermsg" /><a style="margin-left: 790px"  id="submitmsg" onclick="envoiyer('{{ theme.idTheme }}')" >SEND</a></td>
+            </tr>
+        </table>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            function envoiyer(idTheme){
+                var clientmsg = $("#usermsg").val();
+                $.ajax({
+                    url:'{{ path('sendMessage') }}',
+                    type:"post",
+                    data:{'msg':clientmsg,'idthemes':idTheme},
+                });
+                $("#usermsg").val("");
+                return false ;
+            }
+        </script>
+        <script type="text/javascript">
+            // jQuery Document
+            $(document).ready(function () {
+                function loadLog() {
+                    var idDiv=$(".yooo").attr("id");
+                    var esmUser=$(".userJoined").attr("id");
+                    var oldscrollHeight = $("#"+idDiv)[0].scrollHeight - 20; //Scroll height before the request
+                    $.ajax({
+                        url: "{{ path('message') }}",
+                        type: "post",
+                        data:{'idThemes':idDiv},
+                        success: function (retour) {
+                            $("#"+idDiv).empty();
+                            if (retour) {
+                                var ele = retour.split('/n');
+                                for(var i= 0; i < ele.length; i++)
+                                {  var test =ele[i].split(':');
+                                    if(test[0]!=esmUser){
+                                        $("#"+idDiv).append('<span>'+test[0]+'</span><div class="memeber"><p style="color: white">'+test[1]+'</p></div>');
+                                    }
+                                    else{
+                                        ele[i]=test[1];
+                                        $("#"+idDiv).append('<br><div class="moleh"  ><p style="color: white">'+ele[i]+'</p></div>');
+                                    }
+                                }
+                                var newscrollHeight = $("#"+idDiv)[0].scrollHeight - 20;
+                                if (newscrollHeight > oldscrollHeight) {
+                                    $("#"+idDiv).animate({scrollTop: newscrollHeight}, 'normal'); //Autoscroll to bottom of div
+                                }
+                            }
+                        }
+                    });
+                }
+                setInterval (loadLog, 2500);
+            });
+        </script>
     </div>
     <section id="sidebar">
-
         <!-- Intro -->
         <section id="intro">
-
             <header>
                 <img src="{{ asset('uploads/images/' ~theme.image) }}" class="img.fluid"  width="200px" height="200px"/>
                 <h2>{{ theme.nomTheme }}</h2>
-
             </header>
         </section>
-
-
         <!-- Posts List -->
         <section>
             <ul class="posts">
@@ -29,10 +77,8 @@
                     <article>
                         <header>
                             <h3><a href="#">{{ user.nom }} {{user.prenom }} </a></h3>
-
                             <time class="published" >{{ user.gmail  }}</time>
                             <h7>ADMIN</h7>
-
                             <br>
                             <br>
                             <h8>this Theme is
@@ -42,14 +88,12 @@
                                     private
                                 {% endif %}</h8>
                         </header>
-
                     </article>
                 </li>
             </ul>
         </section>
         <h3 style="color: #2ebaae">List of members
             <time class="published" style="color: black" id="nbr">{{ theme.nbrParticipant }}</time><strong style="color:black">/{{ theme.capacite }}</strong>
-
         </h3>
         {% for u in listUser %}
             {% if  u.gmail== app.user.username  %}
@@ -61,16 +105,11 @@
                                 <h3><a href="#"></a>{{u.nom  }} {{ u.prenom }}</h3>
                                 <time class="published" >{{u.gmail  }}</time>
                                 <h7>YOU</h7>
-
-
                             </header>
-
                         </article>
                     </li>
                 </ul>
             </section>
-
-
             {% else %}
                 <section >
                     <ul class="posts">
@@ -80,7 +119,6 @@
                                     <h3><a href="#"></a>{{u.nom  }} {{ u.prenom }}</h3>
                                     <time class="published" >{{u.gmail  }}</time>
                                 </header>
-
                             </article>
                         </li>
                     </ul>
@@ -88,5 +126,151 @@
                 {% endif %}
         {% endfor %}
     </section>
+    <style>
+        input {
+            font-family: "Lato";
+        }
+        a {
+            color: #0000ff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .yooo {
+            text-align: left;
+            margin-left: 30%;
+            background: #fff;
+            height:490px;
+            width: 900px;
+            border: 1px solid #a7a7a7;
+            overflow: auto;
+            border-radius: 4px;
+            border-bottom: 4px solid #a7a7a7;
+        }
+        #usermsg {
+            width: 870px;
+            flex: 1;
+            border-radius: 4px;
+            border: 1px solid #ff9800;
+        }
+        #submitmsg,
+        #enter{
+            background: #ff9800;
+            border: 2px solid #e65100;
+            color: white;
+            padding: 6px 12px;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+        .error {
+            color: #ff0000;
+        }
+        #menu {
+            padding: 15px 25px;
+            display: flex;
+        }
+        #menu p.welcome {
+            flex: 1;
+        }
+        a#exit {
+            color: white;
+            background: #c62828;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .msgln {
+            margin: 0 0 5px 0;
+        }
+        .msgln span.left-info {
+            color: orangered;
+        }
+        .msgln span.chat-time {
+            color: #666;
+            font-size: 60%;
+            vertical-align: super;
+        }
+        .msgln b.user-name, .msgln b.user-name-left {
+            font-weight: bold;
+            background: #546e7a;
+            color: white;
+            padding: 2px 4px;
+            font-size: 90%;
+            border-radius: 4px;
+            margin: 0 5px 0 0;
+        }
 
+        .msgln b.user-name-left {
+            background: orangered;
+        }
+
+        .memeber
+        {
+            background: #ff9800;
+            border: 1px solid #a7a7a7;
+            overflow: auto;
+            border-radius: 4px;
+            text-overflow: ellipsis;
+            margin-right: 25%;
+            border-bottom: 4px solid #a7a7a7;
+        }
+        .moleh
+        {
+            text-align: right;
+            background: #0c63e4;
+            border: 1px solid #a7a7a7;
+            overflow: auto;
+            border-radius: 4px;
+            text-overflow: ellipsis;
+            margin-left: 25%;
+            border-bottom: 4px solid #a7a7a7;
+        }
+        #sidebar {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            bottom: 0;
+            width: 300px;
+            z-index: 996;
+            transition: all 0.3s;
+            padding: 20px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #aab7cf transparent;
+            box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
+            background-color: #fff;
+        }
+        @media (max-width: 1199px) {
+            #sidebar {
+                left: -300px;
+            }
+        }
+        #sidebar::-webkit-scrollbar {
+            width: 5px;
+            height: 8px;
+            background-color: #fff;
+        }
+        #sidebar::-webkit-scrollbar-thumb {
+            background-color: #aab7cf;
+        }
+        @media (min-width: 1200px) {
+            #main, #footer {
+                margin-left: 300px;
+            }
+        }
+        @media (max-width: 1199px) {
+            .toggle-sidebar .sidebar {
+                left: 0;
+            }
+        }
+        @media (min-width: 1200px) {
+            .toggle-sidebar #main, .toggle-sidebar #footer {
+                margin-left: 0;
+            }
+            .toggle-sidebar .sidebar {
+                left: -300px;
+            }
+        }
+    </style>
 {% endblock %}

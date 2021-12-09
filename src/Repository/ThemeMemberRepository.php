@@ -50,5 +50,15 @@ class ThemeMemberRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-
+    /**
+     * @return ThemeMembre[] Returns an array of Theme objects
+     */
+    public function findByGmailThemeMember($gmail):array
+    {
+        return $this->createQueryBuilder('tm')
+            ->where('tm.gmail LIKE :x')
+            ->setParameter('x', '%'.$gmail.'%')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -115,20 +115,18 @@ public function AddTheme(EntityManagerInterface $em, Request $request)
         'themeForm'=>$form->createView()
     ]);
 }
-
     /**
      * @Route("/searchTheme", name="searchThemes")
      * @throws ExceptionInterface
      */
-    public function searchTheme(Request $request,NormalizerInterface $Normalizer,ThemeRepository $rt): Response
+    public function searchTheme(Request $request,NormalizerInterface $Normalizer,ThemeRepository $rt)
     {
-$requestString=$request->request->get('searchTheme');
-$theme = $rt->findByNomTheme($requestString);
-$jsonContent = $Normalizer->normalize($theme, 'json',['groups'=>'YourTheme']);
+        $searchTheme=$_GET['searchTheme'];
+$theme = $rt->findByNomTheme($searchTheme);
+$jsonContent = $Normalizer->normalize($theme, 'json');
 $retour=json_encode($jsonContent);
 return new Response($retour);
 }
-
 
     /**
      * @Route ("/JoinTheme/{idTheme}",name="joinThemes",methods={"POST","GET"})
@@ -145,9 +143,6 @@ public function joinTheme(EntityManagerInterface $em,$idTheme): Response
      $em->persist($theme);
      $em->flush();
      return $this->redirectToRoute("theme");
-
-
-
 }
 
     /**
@@ -190,22 +185,67 @@ public function LeaveTheme($idTheme,EntityManagerInterface $em): \Symfony\Compon
         $mail=$user->getUsername();
         $theme= $em->getRepository(Theme::class)->find($idTheme);
         $molaTheme=$u->findBygmail($mail);
-
-            $listParticipe=$theme->getListDeParticipant();
-            foreach ($listParticipe as $lp){
-                array_push($listUsers,$u->findBygmail($lp));
-
+        $listParticipe=$theme->getListDeParticipant();
+        foreach ($listParticipe as $lp){
+            array_push($listUsers,$u->findBygmail($lp));
             }
-
-
-            $listMessage=$theme->getMessages();
-
-
-
-            return $this->render('theme/YourThemechat.html.twig',[
-
+        return $this->render('theme/YourThemechat.html.twig',[
                 'theme'=>$theme,'molaTheme'=>$molaTheme,'listUser'=>$listUsers
             ]);
+        }
+
+    /**
+     * @Route("/messages",name="message",methods={"POST","GET"})
+     * @throws NonUniqueResultException
+     * @throws ExceptionInterface
+     */
+        public function affichageDesMessage(ThemeRepository $t,UserRepository $u,EntityManagerInterface $em){
+           $listAffichage=[];
+           $idtheme=$_POST['idThemes'];
+            $theme= $t->find($idtheme);
+            $listMessage=$theme->getMessages();
+            foreach ($listMessage as $l){
+               $f= explode(':',$l);
+              $users= $em->getRepository(User::class)->findAll();
+              foreach ($users as $us) {
+                  if($us->getGmail()==$f[0]) {
+                      $esmUser = $us->getNom();
+                      array_push($listAffichage, "$esmUser:$f[1]");
+                  }
+              }
+            }
+            $retour=implode("/n",$listAffichage);
+
+            return new Response($retour);
+
+        }
+
+    /**
+     * @Route ("/sendMessage",name="sendMessage",methods={"POST","GET"})
+     */
+        public function sendMessage(ThemeRepository $t,EntityManagerInterface $em){
+            $user=$this->getUser();
+            $mail=$user->getUsername();
+           //$MSG = $request->request->get('usermsg');
+            $MSG=$_POST['msg'];
+            $idtheme=$_POST['idthemes'];
+            $theme= $t->find( $idtheme);
+            $listMessage=$theme->getMessages();
+            if($listMessage==null){
+                $listmessage=[];
+                array_push($listmessage,"$mail:$MSG");
+                $theme->setMessages($listmessage);
+                $em->persist($theme);
+                $em->flush();
+            }
+            else {
+                array_push($listMessage, "$mail:$MSG");
+                $theme->setMessages($listMessage);
+                $em->persist($theme);
+                $em->flush();
+            }
+            $retour = "hey";
+            return new Response($retour);
         }
 
     /**
@@ -213,19 +253,19 @@ public function LeaveTheme($idTheme,EntityManagerInterface $em): \Symfony\Compon
      */
         public function AffichJoinedTheme($idTheme,EntityManagerInterface $em,UserRepository $u): Response
         {
+            $userAuthenfie=$this->getUser();
+            $EmailUserConnectee= $userAuthenfie->getUsername();
+            $UserConnecte=$u->findBygmail($EmailUserConnectee);
             $theme= $em->getRepository(Theme::class)->find($idTheme);
             $user=$u->findBygmail($theme->getEmail());
            $listUsers=[];
             $listParticipe=$theme->getListDeParticipant();
             foreach ($listParticipe as $lp){
                 array_push($listUsers,$u->findBygmail($lp));
-
             }
-            $listMessage=$theme->getMessages();
-
 
             return $this->render('theme/joinedThemeChat.html.twig',[
-               'theme'=>$theme,'user'=>$user,'listUser'=>$listUsers
+               'theme'=>$theme,'user'=>$user,'listUser'=>$listUsers,'userConnecte'=>$UserConnecte
 
             ]);
         }
@@ -267,25 +307,5 @@ public function LeaveTheme($idTheme,EntityManagerInterface $em): \Symfony\Compon
         $em->flush();
         $retour="valider";
         return new Response($retour);
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Admin;
+use App\Entity\BanList;
 use App\Entity\ForgetPassword;
 use App\Entity\Membre;
 use App\Entity\User;
@@ -44,7 +45,7 @@ class SecurityController extends AbstractController
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
     /**
-     * @Route ("/LoggedIn",name="logged",methods={"POST","GET"})
+     * @Route ("/Home",name="logged",methods={"POST","GET"})
      */
     public function logedIn(): Response
     {$user=new User();
@@ -56,7 +57,7 @@ class SecurityController extends AbstractController
                 'username' => ($this->getUser())->getUsername()
             ]);
         }
-        return $this->render('admin.html.twig', [
+        return $this->render('admin/dashboard.html.twig', [
             'user' => $this->getUser(),
             'username' => ($this->getUser())->getUsername()
         ]);
@@ -78,44 +79,56 @@ class SecurityController extends AbstractController
         $member=new Membre();
         $form= $this->createForm(RegistrationFormType::class,$user);
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid()) {
-            if ($verifierEmail->check($user->getGmail())) {
-                $role = $user->getRole();
-                if ($role == "admin") {
-                    $verification = $request->request->get('verifier');
-                    if ($verification == "admin") {
+            $testBann=false;
+            $BannedList=$em->getRepository(BanList::class)->findAll();
+            foreach ($BannedList as $b){
+                if($user->getGmail()==$b->getGmail()){
+                    $testBann=true;
+                }
+            }
+            if(!$testBann) {
+                if ($verifierEmail->check($user->getGmail())) {
+                    $role = $user->getRole();
+                    if ($role == "admin") {
+                        $verification = $request->request->get('verifier');
+                        if ($verification == "admin") {
+                            //$hash=$encoder->encodePassword($user,$user->getPassword());
+                            //$user->setPassword($hash);
+                            $admin->setGmail(($user->getGmail()));
+                            $admin->setNumPoste(-1);
+                            $admin->setAdresse("");
+                            $em->persist($admin);
+                            $em->persist($user);
+                            $em->flush();
+                            return $this->redirectToRoute("app_login");
+                        } else {
+                            $this->addFlash('success', 'wrong verification you cant be admin !!');
+                            return $this->render("signup/register.html.twig", [
+                                'form' => $form->createView(),
+                            ]);
+                        }
+                    } else {
                         //$hash=$encoder->encodePassword($user,$user->getPassword());
                         //$user->setPassword($hash);
-                        $admin->setGmail(($user->getGmail()));
-                        $admin->setNumPoste(-1);
-                        $admin->setAdresse("");
-                        $em->persist($admin);
+                        $member->setGmail(($user->getGmail()));
+                        $member->setIdList(-1);
+                        $member->setIdProfil(-1);
+                        $em->persist($member);
                         $em->persist($user);
                         $em->flush();
                         return $this->redirectToRoute("app_login");
-                    } else {
-                        $this->addFlash('success', 'wrong verification you cant be admin !!');
-                        return $this->render("signup/register.html.twig", [
-                            'form' => $form->createView(),
-                        ]);
                     }
-                } else {
-                    //$hash=$encoder->encodePassword($user,$user->getPassword());
-                    //$user->setPassword($hash);
-                    $member->setGmail(($user->getGmail()));
-                    $member->setIdList(-1);
-                    $member->setIdProfil(-1);
-                    $em->persist($member);
-                    $em->persist($user);
-                    $em->flush();
-                    return $this->redirectToRoute("app_login");
-                }
 
+                } else {
+                    $this->addFlash('success', 'THIS EMAIL DOSE NOT EXIST !!');
+
+                }
             }
             else
             {
-                $this->addFlash('success', 'THIS EMAIL DOSE NOT EXIST !!');
-
+                $this->addFlash('success', 'THIS EMAIL IS BANNED !!');
             }
         }
 

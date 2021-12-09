@@ -1,0 +1,106 @@
+{% extends   'Admin/dashboard.html.twig' %}
+{% block title %}Themes List{% endblock%}
+{% block body %}
+    <style>
+        #yo {
+            text-align: left;
+            margin: 0 auto;
+            margin-bottom: 25px;
+            padding: 10px;
+            background: #fff;
+            height:600px;
+            width: 530px;
+            border: 1px solid #a7a7a7;
+            overflow: auto;
+            border-radius: 4px;
+            border-bottom: 4px solid #a7a7a7;
+        }
+    </style>
+    <div class="pagetitle">
+        <h1>gestion Theme</h1>
+
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <h3 style="color: #0c63e4">Themes List</h3>
+            <table>
+                <tr style="color: #0a53be">
+                    <td>ID</td>
+                    <td >Theme name</td>
+                    <td >visibility</td>
+                    <td>capacity</td>
+                    <td>n° members</td>
+                    <td>members</td>
+                    <td>created by</td>
+                </tr>
+                {% for t in ThemeList %}
+    <tr id="{{ t.idTheme }}">
+        <td>{{ t.idTheme }}</td>
+        <td >{{ t.nomTheme }}</td>
+        <td >{% if t.visibilite %}Public{% else %}Private{% endif %}</td>
+        <td>{{ t.capacite }}</td>
+        <td>{{ t.nbrParticipant }}</td>
+        <td>{% for x in t.listDeParticipant %}<li>{{ x }}</li>{% endfor %}</td>
+        <td>{{ t.email }}</td>
+        <td>
+            <a  onclick="ShowMessage('{{ t.idTheme }}')" >
+                <span style="color: green">Show Message</span>
+            </a>
+            ||
+            <a  onclick="Delete('{{ t.idTheme }}')" >
+                <span style="color: red" >Delete</span>
+            </a>
+        </td>
+
+    </tr>
+{% endfor %}
+            </table>
+        </div>
+    </div>
+    <div id="yo" class="col-lg-4">
+
+    </div>
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+    </script>
+<script>
+    function ShowMessage(idTheme){
+        $.ajax(
+            {
+                url:"{{ path('showMessage') }}",
+                type:'post',
+                data:{'idtheme':idTheme},
+                success:function (rep){
+                    $("div#yo").empty();
+                    $("div#yo").append('<h4>Theme id :'+idTheme+'</h4>');
+                    if(rep==""){
+                        $("div#yo").append('<p>empty conversation</p>');
+                    }
+                    else
+                    {
+                        var ele = rep.split('/n');
+                        for(var i= 0; i < ele.length; i++)
+                        {
+                            $("div#yo").append('<p>'+ele[i]+'</p><hr>');
+                        }
+                    }
+                    }
+            });
+    }
+</script>
+    <script>
+        function Delete(idTheme) {
+            $.ajax(
+                {
+                    url: "{{ path('delete') }}",
+                    type: 'post',
+                    data: {'idtheme': idTheme},
+                    success: function (rep) {
+                        if (rep == "delete") {
+                            $("#" + idTheme).remove();
+                        }
+                    }
+                });
+        }
+    </script>
+{% endblock %}

@@ -1,34 +1,24 @@
 {% extends   'base.html.twig' %}
 {% block title %}themes!{% endblock%}
 {% block body %}
-
-
-    <header><ul class="actions">
-            <li><a  class="button large" href={{ path('addtheme') }}> Add a Theme ?</a></li>
-        </ul>
-        <section>
-
-                <input type="text" id="searchTheme" name="searchTheme" placeholder="SearchTheme" value=""/>
-
-        </section>
-    </header>
-
-
-
-    <div id="main">
+    <div id="main" >
 
     <section id="main-content">
         <!-- <div class="container event">-->
         <section class="wrapper site-min-height">
-            <div class="container event">
-                <div class="row justify-content-center text-center">
-                    <h1>******************************************YOUR-THEMES**************************************</h1>
 
 
-                    <tbody id="all">
+
+
+
+<div id="all">
+    <h1>******************************************YOUR-THEMES**************************************</h1>
+    <table>
+<tr>
                    {% for y in YourTheme %}
-                       <hr>
-                       <div  class="offset-sm-1 col-sm-5 clll">
+
+    <td>
+                       <div   id="{{ y.idTheme }}">
                            <img src="{{ asset('uploads/images/' ~y.image) }}" class="img.fluid" alt="" width="200px" height="200px" >
                            <div >
                                <h3>{{ y.nomTheme }}</h3>
@@ -39,23 +29,27 @@
                                <br>
                                <a href="{{ path('DeleteTheme',{'idTheme':y.idTheme})}}">-Delete your Theme-</a>
 
+
                            </div>
                        </div>
-                    <hr>
+    </td>
 
                     {% endfor %}
-                    </tbody>
-                    <tbody id="bodysearch">
+</tr>
+    </table>
 
 
-                    </tbody>
 
-                    <h1>************************************THEMES-JOINED*!******************************************</h1>
 
-                       <tbody >
+
+                    <h1>************************************THEMES-JOINED*!***********************************</h1>
+
+    <table>
+        <tr>
                     {% for j in joinedTheme %}
-                        <div class="offset-sm-1 col-sm-5 clll">
-                            <img src="{{ asset('uploads/images/' ~j.image) }}" class="img.fluid" alt="" width="200px" height="200px" >
+                     <td>
+                        <div id="{{ j.idTheme }}">
+                            <img src="{{ asset('uploads/images/' ~j.image) }}" class="img.fluid"  alt="" width="200px" height="200px" >
                             <div class="event-content">
                                 <h3>{{ j.nomTheme }}</h3>
                                 <h6>n°members:{{ j.nbrParticipant }}/{{ j.capacite }}</h6>
@@ -72,16 +66,19 @@
 
                             </div>
                         </div>
-                        <hr>
+
+                     </td>
                     {% endfor %}
-                       </tbody>
+        </tr>
+    </table>
 
+                    <h1>*************************************OTHER-THEMES**************************************</h1>
+    <table>
+        <tr>
 
-                    <h1>*************************************OTHER-THEMES********************************************</h1>
-
-                        <tbody >
                  {% for o in OtherTheme %}
-                        <div class="offset-sm-1 col-sm-5 clll">
+                     <td>
+                        <div id="{{ o.idTheme }}" >
                             <img src="{{ asset('uploads/images/' ~o.image) }}" class="img.fluid" alt="" width="200px" height="200px" >
                             <div class="event-content">
                                 <h3>{{ o.nomTheme }}</h3>
@@ -97,46 +94,70 @@
                             </div>
                         </div>
                      <hr>
+        </td>
                     {% endfor %}
-                        </tbody>
+        </tr>
+    </table>
+</div>
+                    <div id="bodysearch">
+
+
                     </div>
-                </div>
+
+
 
         </section>
     </section>
     </div>
+
+    <section id="sidebar">
+        <!--list post-->
+        <section >
+            <ul class="posts">
+                <li>
+                    <article>
+                        <header>
+
+                <input type="text" id="searchTheme" name="searchTheme" placeholder="SearchTheme" value=""/>
+                </header>
+
+                    </article>
+                </li>
+            </ul>
+            <a  class="button large" href={{ path('addtheme') }}> Add a Theme ?</a>
+        </section>
+
+    </section>
 
     <script
             src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
     </script>
 <script>
     $( document ).ready(function() {
-        $('#searchTheme').keyup(function(e){
-
+        $("#searchTheme").keyup(function(e){
             var value = $(this).val();
-
+            var search=$("#bodysearch");
             $.ajax({
-
-                url : "{{ path('theme') }}",
-
-                type : 'GET',
-
-                data: {
-                    'searchTheme' : value
-                },
+                url : "{{ path('searchThemes') }}",
+                type : 'get',
+                data: "searchTheme="+value,
                 success : function(retour){
-                    if(retour){
-                        $('tbody#search').empty();
+                    if(retour && value!="" ){
+                        $("#bodysearch").empty();
+                        $("#all").hide();
                         $.each(JSON.parse(retour), function( i ,obj) {
-                            $('tbody#all').hide();
-                            $('tbody#bodysearch').append('<hr><div class="offset-sm-1 col-sm-5 clll"><img src= "uploads/images/~' +obj.image+'" class="img.fluid" alt="" width="200px" height="200px" ><div class="event-content"> <h4>'+obj.nomTheme+'</h4><p>n°members: '+obj.nbrParticipant+'/'+ obj.capacite +'</p> <span>created by you</span><br> <a href="#">Enter your Theme</a><br></div></div><hr>');
+
+
+                            var element_search=$("#"+obj.idTheme);
+                            element_search.clone().appendTo(search);
                         });
                     }
                     else
                     {
-                        $('tbody#all').show();
-                        $('tbody#bodysearch').empty();
-                        $('tbody#bodysearch').fadeIn('fast');
+                        $('#all').show();
+                        $('#bodysearch').empty();
+
+                        $('#bodysearch').fadeIn('fast');
                     }
                 },
             });
@@ -144,8 +165,54 @@
         });
     });
 </script>
-
-
+    <style>
+        #sidebar {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            bottom: 0;
+            width: 300px;
+            z-index: 996;
+            transition: all 0.3s;
+            padding: 20px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #aab7cf transparent;
+            box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
+            background-color: #fff;
+        }
+        @media (max-width: 1199px) {
+            #sidebar {
+                left: -300px;
+            }
+        }
+        #sidebar::-webkit-scrollbar {
+            width: 5px;
+            height: 8px;
+            background-color: #fff;
+        }
+        #sidebar::-webkit-scrollbar-thumb {
+            background-color: #aab7cf;
+        }
+        @media (min-width: 1200px) {
+            #main, #footer {
+                margin-left: 300px;
+            }
+        }
+        @media (max-width: 1199px) {
+            .toggle-sidebar .sidebar {
+                left: 0;
+            }
+        }
+        @media (min-width: 1200px) {
+            .toggle-sidebar #main, .toggle-sidebar #footer {
+                margin-left: 0;
+            }
+            .toggle-sidebar .sidebar {
+                left: -300px;
+            }
+        }
+    </style>
 {% endblock %}
 
 
