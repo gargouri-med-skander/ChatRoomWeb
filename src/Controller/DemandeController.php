@@ -127,7 +127,7 @@ class DemandeController extends AbstractController
         $amis->setIdAmi($usermembre);
         $entityManager->remove($demande);
         $message = (new \Swift_Message('Your Invitation est accepter'))
-            ->setFrom('siwar.brahmi@esprit.tn')
+            ->setFrom('s ')
             ->setTo($usermembre->getGmail())
             ->setBody(
                 $this->renderView(

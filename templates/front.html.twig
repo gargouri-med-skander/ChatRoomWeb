@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title>Profile</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{{ asset('front/assets/css/main.css') }}" />
+</head>
+<body class="is-preload">
+
+<!-- Header -->
+<header id="header">
+
+    <div class="inner">
+        <a href="#" class="image avatar"><img src="{{ asset('front/images/avatar.jpg') }}" alt="" /></a>
+        <h1><strong>Username_here</strong></h1>
+    </div>
+    <div class="innerInfo">
+        <div class="col-4 col-12-small">
+            <ul class="labeled-icons">
+
+                <h3 class="icon solid fa-home"><span class="label">Address</span></h3>
+                City/Country<br />
+
+
+                <h3 class="icon solid fa-mobile-alt"><span class="label">Phone</span></h3>
+                000-000-0000
+
+
+                <h3 class="icon solid fa-envelope"><span class="label">Email</span></h3>
+                <a href="#">hello@esprit.tn</a>
+
+            </ul>
+        </div>
+    </div>
+</header>
+
+<!-- Main -->
+<div id="main">
+
+    <!-- One -->
+    <section id="one">
+    {% block body %} {% endblock %}
+    </section>
+
+    <!-- Two -->
+    <section id="two">
+
+    </section>
+</div>
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="inner">
+        <ul class="icons">
+            <a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a>
+            <a href="#" class="icon brands fa-github"><span class="label">Github</span></a>
+            <a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a>
+            <a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a>
+        </ul>
+        <ul class="copyright">
+            &copy; UntitledDesign: <a href="http://html5up.net">HTML5 UP</a>
+        </ul>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="{{ asset('front/assets/js/jquery.min.js') }}"></script>
+<script src="{{ asset('front/assets/js/jquery.poptrox.min.js') }}"></script>
+<script src="{{ asset('front/assets/js/browser.min.js') }}"></script>
+<script src="{{ asset('front/assets/js/breakpoints.min.js') }}"></script>
+<script src="{{ asset('front/assets/js/util.js') }}"></script>
+<script src="{{ asset('frot/assets/js/main.js') }}"></script>
+
+</body>
+</html>
